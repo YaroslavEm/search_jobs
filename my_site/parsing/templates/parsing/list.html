@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Main {% endblock %}
+
+{% block body %}
+
+{% if page_obj %}
+<h2 class="my-4 text-center">По вашему запросу найдено {{ len_vacancies }} вакансий</h2>
+{% for vacancy in page_obj %}
+<div class="card my-3">
+    <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
+    <div class="card-body">
+        <p class="card-text">{{ vacancy.description|truncatewords:30 }}</p>
+        <p class="card-text"><a href="{{ vacancy.url }}">Посмотреть полное описание вакансии</a></p>
+        <p>{{ vacancy.city.title }} | {{ vacancy.language.title }} |
+            <small>{{ vacancy.time_create|date:"d-m-Y" }}</small></p>
+    </div>
+</div>
+{% endfor %}
+<div class="row">
+    <div class="col">
+        <div class="paginator">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?city={{ city }}&language={{ language }}&page=1">&laquo; first</a>
+                <a href="?city={{ city }}&language={{ language }}&page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ page_obj.number }} of {{  page_obj.paginator.num_pages }}.
+                {% if page_obj.has_next %}
+                <a href="?city={{ city }}&language={{ language }}&page={{ page_obj.next_page_number }}">next</a>
+                <a href="?city={{ city }}&language={{ language }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+{% else %}
+<h2 class="my-4 text-center">По вашему запросу ничего не найдено. Попробуйте еще раз.</h2>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <form action="" method="GET">
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

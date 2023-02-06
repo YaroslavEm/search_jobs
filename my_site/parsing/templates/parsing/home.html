@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col"><h2 class="text-center my-3">Сервис по сбору и рассылки вакансий</h2></div>
+</div>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h4 class="my-2">Заполните форму по одному из полей</h4>
+        <form action="{% url 'list' %}" method="GET">
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+    </div>
+</div>
+
+<p></p>
+
+{% if not user.is_authenticated %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="col"><h4 class="my-2">Используйте глобальный поиск вакансий по ключевому слову. Для этого
+            Вам необходимо <a href="{% url 'accounts:register' %}">зарегистрироваться</a> на сайте.</h4>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="col"><h4 class="my-2">Введите ключевое слово для поиска вакансий в форму ниже.</h4>
+        </div>
+    </div>
+</div>
+
+<p></p>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapsed"
+                    aria-expanded="false" aria-controls="collapseExample">
+                Показать форму
+            </button>
+        </p>
+        <div class="collapse" id="collapsed">
+            <div class="card card-body">
+                <form action="{% url 'global' %}" method="GET">
+                    <div class="form-group">
+                        {{ global_form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
